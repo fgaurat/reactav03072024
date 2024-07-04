@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../app/store";
-import { fetchTodosAsync } from "../features/todos/todosSlice";
+import { fetchDeleteTodoAsync, fetchTodosAsync } from "../features/todos/todosSlice";
+import { Todo } from "../core/Todo";
 
 function TodoList() {
   const todos = useSelector((state: RootState) => state.todoListState.todos);
@@ -10,6 +11,11 @@ function TodoList() {
   useEffect(() => {
     dispatch(fetchTodosAsync())
   }, [dispatch])
+
+const handleDelete = (todo:Todo)=>{
+    dispatch(fetchDeleteTodoAsync(todo))
+}
+  
   return (
     <table className="table">
       <thead>
@@ -26,7 +32,9 @@ function TodoList() {
                 <td>{todo.id}</td>
                 <td>{todo.title}</td>
                 <td>{todo.completed}</td>
-                <td></td>
+                <td>
+                    <button onClick={ () => handleDelete(todo)}>delete</button>
+                </td>
             </tr>
         ))}
       </tbody>
